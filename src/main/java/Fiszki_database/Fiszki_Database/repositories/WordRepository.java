@@ -12,3 +12,6 @@ public interface WordRepository extends CrudRepository<WordEntity, Long> {
     Optional<WordEntity> findByWord(String word);
 
 }
+
+
+//20.10.2025
