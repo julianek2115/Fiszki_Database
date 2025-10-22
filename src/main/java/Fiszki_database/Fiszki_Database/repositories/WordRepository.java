@@ -15,3 +15,4 @@ public interface WordRepository extends CrudRepository<WordEntity, Long> {
 
 
 //20.10.2025
+//22.10.2025
