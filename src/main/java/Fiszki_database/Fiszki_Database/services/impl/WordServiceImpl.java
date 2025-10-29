@@ -33,4 +33,11 @@ public class WordServiceImpl implements WordService {
     public Optional<WordEntity> findByWord(String word) {
         return wordRepository.findByWord(word);
     }
+
+    @Override
+    public void delete(Long id) {
+        wordRepository.deleteById(id);
+    }
+
+
 }

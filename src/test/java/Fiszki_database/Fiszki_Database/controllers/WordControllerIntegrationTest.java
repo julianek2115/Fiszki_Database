@@ -80,4 +80,23 @@ public class WordControllerIntegrationTest {
                 MockMvcResultMatchers.status().isOk()
         );
     }
+
+    @Test
+    public void testThatDeleteWordReturnsHttpStatus204ForNonExistingWord() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/words/999")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void testThatDeleteWordReturnsHttpStatus204ForExistingWord() throws Exception {
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        WordEntity savedWord = wordService.save(testWordEntityA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/words/" + savedWord.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 }

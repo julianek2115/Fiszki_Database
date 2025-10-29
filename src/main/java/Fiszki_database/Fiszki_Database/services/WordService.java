@@ -14,4 +14,6 @@ public interface WordService {
     List<WordEntity> findAll();
 
     Optional<WordEntity> findByWord(String word);
+
+    void delete(Long id);
 }

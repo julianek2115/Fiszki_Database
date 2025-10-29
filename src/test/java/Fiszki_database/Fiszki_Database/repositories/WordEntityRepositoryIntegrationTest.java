@@ -36,4 +36,13 @@ public class WordEntityRepositoryIntegrationTest {
         assertThat(resultByWord.isPresent());
         assertThat(resultByWord.get()).isEqualTo(wordEntity);
     }
+
+    @Test
+    public void testThatWordCanBeDeletedAndRecalled(){
+        WordEntity wordEntity = TestDataUtil.createTestWordEntityA();
+        wordRepository.save(wordEntity);
+        wordRepository.deleteById(wordEntity.getId());
+        Optional<WordEntity> resultByWord = wordRepository.findById(wordEntity.getId());
+        assertThat(resultByWord.isPresent());
+    }
 }
