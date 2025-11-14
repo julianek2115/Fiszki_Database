@@ -42,7 +42,7 @@ public class WordController {
     }
 
     //***LISTOWANIE SŁÓW FILTRUJĄC JE PO ICH KATEGORII
-
+    @GetMapping(path = "/words/category/{category}")
     //***** TO DO *****
 
 
