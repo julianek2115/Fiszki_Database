@@ -4,6 +4,7 @@ import Fiszki_database.Fiszki_Database.domain.Entities.WordEntity;
 import Fiszki_database.Fiszki_Database.repositories.WordRepository;
 import Fiszki_database.Fiszki_Database.services.WordService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,11 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
+    public List<WordEntity> findAllByCategory(String category) {
+        return wordRepository.findAllByCategory(category);
+    }
+
+    @Override
     public Optional<WordEntity> findByWord(String word) {
         return wordRepository.findByWord(word);
     }
@@ -37,6 +43,12 @@ public class WordServiceImpl implements WordService {
     @Override
     public void delete(Long id) {
         wordRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteWord(String word) {
+        wordRepository.deleteByWord(word);
     }
 
 

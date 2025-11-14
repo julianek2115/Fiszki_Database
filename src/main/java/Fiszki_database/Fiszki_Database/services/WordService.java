@@ -13,7 +13,13 @@ public interface WordService {
 
     List<WordEntity> findAll();
 
+    List<WordEntity> findAllByCategory(String category);
+
     Optional<WordEntity> findByWord(String word);
 
     void delete(Long id);
+
+    void deleteWord(String word);
+
+
 }

@@ -82,9 +82,19 @@ public class WordControllerIntegrationTest {
     }
 
     @Test
+    public void testThatListWordsByCategorySuccessfullyReturnsHttp200Created() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/words/czesci_ciala")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
     public void testThatDeleteWordReturnsHttpStatus204ForNonExistingWord() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/words/999")
+                MockMvcRequestBuilders.delete("/words/id/999")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -95,7 +105,25 @@ public class WordControllerIntegrationTest {
         WordEntity savedWord = wordService.save(testWordEntityA);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/words/" + savedWord.getId())
+                MockMvcRequestBuilders.delete("/words/id/" + savedWord.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void testThatDeleteWordByWordReturnsHttpStatus204ForNonExistingWord() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/words/word/banan")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void testThatDeleteWordByWordReturnsHttpStatusForExistingWord() throws Exception {
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        WordEntity savedWord = wordService.save(testWordEntityA);
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/words/word/" + savedWord.getWord())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

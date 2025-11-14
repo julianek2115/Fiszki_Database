@@ -8,12 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@EnableTransactionManagement
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 
@@ -38,11 +41,21 @@ public class WordEntityRepositoryIntegrationTest {
     }
 
     @Test
-    public void testThatWordCanBeDeletedAndRecalled(){
+    public void testThatWordCanBeDeletedAndRecalledById(){
         WordEntity wordEntity = TestDataUtil.createTestWordEntityA();
         wordRepository.save(wordEntity);
         wordRepository.deleteById(wordEntity.getId());
         Optional<WordEntity> resultByWord = wordRepository.findById(wordEntity.getId());
+        assertThat(resultByWord.isPresent());
+    }
+
+    @Test
+    @Transactional
+    public void testThatWordCanBeDeletedAndRecalledByWord(){
+        WordEntity wordEntity = TestDataUtil.createTestWordEntityA();
+        wordRepository.save(wordEntity);
+        wordRepository.deleteByWord(wordEntity.getWord());
+        Optional<WordEntity> resultByWord = wordRepository.findByWord(wordEntity.getWord());
         assertThat(resultByWord.isPresent());
     }
 }

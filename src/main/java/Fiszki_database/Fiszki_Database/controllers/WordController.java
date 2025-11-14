@@ -31,6 +31,8 @@ public class WordController {
         WordDto savedWordDto = wordMapper.mapTo(savedWordEntity);
         return new ResponseEntity<>(savedWordDto, HttpStatus.CREATED);
     }
+
+    //***LISTOWANIE WSZYSTKICH SŁÓW W BAZIE DANYCH***
     @GetMapping(path = "/words")
     public List<WordDto> listWords(){
         List<WordEntity> words = wordService.findAll();
@@ -38,6 +40,11 @@ public class WordController {
                 .map(wordMapper::mapTo)
                 .collect(Collectors.toList());
     }
+
+    //***LISTOWANIE SŁÓW FILTRUJĄC JE PO ICH KATEGORII
+
+    //***** TO DO *****
+
 
     @GetMapping(path = "/words/{word}")
     public ResponseEntity<WordDto> getWord(@PathVariable("word") String word){
@@ -49,9 +56,16 @@ public class WordController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping(path = "/words/{id}")
-    public ResponseEntity<WordDto> deleteWord(@PathVariable("id") Long id){
+    @DeleteMapping(path = "/words/id/{id}")
+    public ResponseEntity<WordDto> deleteWordById(@PathVariable("id") Long id){
         wordService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping(path = "/words/word/{word}")
+    public ResponseEntity<WordDto> deleteWord(@PathVariable("word") String word){
+        wordService.deleteWord(word);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
