@@ -11,7 +11,7 @@ public class TranslationMapperImpl implements Mapper<TranslationEntity, Translat
 
     private ModelMapper modelMapper;
 
-    public TranslationMapperImpl() {
+    public TranslationMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 

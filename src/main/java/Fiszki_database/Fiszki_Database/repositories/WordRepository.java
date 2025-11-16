@@ -13,7 +13,7 @@ public interface WordRepository extends CrudRepository<WordEntity, Long> {
 
     Optional<WordEntity> findByWord(String word);
 
-    @Query("select w from WordEntity w where w.category like %?1")
+    @Query("select w from WordEntity w where w.category = ?1")
     List<WordEntity> findAllByCategory(String category);
 
     void deleteByWord(String word);

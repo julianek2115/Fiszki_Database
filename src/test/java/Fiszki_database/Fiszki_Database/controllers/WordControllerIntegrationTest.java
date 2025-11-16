@@ -82,14 +82,16 @@ public class WordControllerIntegrationTest {
     }
 
     @Test
-    public void testThatListWordsByCategorySuccessfullyReturnsHttp200Created() throws Exception {
+    public void testThatGetAllWordsByCategorySuccessfullyReturnsHttp200Created() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/words/czesci_ciala")
+                MockMvcRequestBuilders.get("/words/category/czesci_ciala")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         );
+
     }
+
 
     @Test
     public void testThatDeleteWordReturnsHttpStatus204ForNonExistingWord() throws Exception {

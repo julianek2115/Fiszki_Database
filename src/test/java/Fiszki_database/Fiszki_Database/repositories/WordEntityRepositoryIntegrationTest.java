@@ -40,6 +40,8 @@ public class WordEntityRepositoryIntegrationTest {
         assertThat(resultByWord.get()).isEqualTo(wordEntity);
     }
 
+
+
     @Test
     public void testThatWordCanBeDeletedAndRecalledById(){
         WordEntity wordEntity = TestDataUtil.createTestWordEntityA();
@@ -58,4 +60,6 @@ public class WordEntityRepositoryIntegrationTest {
         Optional<WordEntity> resultByWord = wordRepository.findByWord(wordEntity.getWord());
         assertThat(resultByWord.isPresent());
     }
+
+    //**NAPISAĆ TEST DLA LISTOWANIA SŁÓW PO KATEGORII**
 }

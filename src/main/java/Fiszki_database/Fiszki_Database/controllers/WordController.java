@@ -43,8 +43,12 @@ public class WordController {
 
     //***LISTOWANIE SŁÓW FILTRUJĄC JE PO ICH KATEGORII
     @GetMapping(path = "/words/category/{category}")
-    //***** TO DO *****
-
+    public List<WordDto> listWordsByCategory(@PathVariable("category") String category){
+        List<WordEntity> foundWords = wordService.findAllByCategory(category);
+        return  foundWords.stream()
+                .map(wordMapper::mapTo)
+                .collect(Collectors.toList());
+    }
 
     @GetMapping(path = "/words/{word}")
     public ResponseEntity<WordDto> getWord(@PathVariable("word") String word){
