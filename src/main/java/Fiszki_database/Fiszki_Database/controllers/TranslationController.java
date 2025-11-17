@@ -6,10 +6,10 @@ import Fiszki_database.Fiszki_Database.mappers.Mapper;
 import Fiszki_database.Fiszki_Database.services.TranslationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 
@@ -33,4 +33,13 @@ public class TranslationController {
         return new ResponseEntity<>(savedTranslationDto, HttpStatus.CREATED);
 
     }
+
+    @GetMapping(path = "/translations")
+    public List<TranslationDto> listTranslations(){
+        List<TranslationEntity> translations = translationService.findAll();
+        return translations.stream()
+                .map(x -> translationMapper.mapTo(x))
+                .collect(Collectors.toList());
+    }
+
 }

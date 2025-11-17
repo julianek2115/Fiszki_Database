@@ -53,6 +53,28 @@ public class TranslationControllerIntegrationTest {
         );
     }
 
-    //commit test
+    @Test
+    public void testThatCreateTranslationReturnsCreatedTranslation() throws Exception {
+        TranslationDto testTranslationDto = TestDataUtil.createTestTranslationDtoA(null);
+        String createTranslationJson = objectMapper.writeValueAsString(testTranslationDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/translations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createTranslationJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.id").value(1)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.meaning").value(testTranslationDto.getMeaning())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.language").value(testTranslationDto.getLanguage())
+        );
+
+    }
+
+    @Test
+    public void testThatListTranslationsSuccessfullyReturnsHttp200Created() throws Exception {
+
+    }
 
 }

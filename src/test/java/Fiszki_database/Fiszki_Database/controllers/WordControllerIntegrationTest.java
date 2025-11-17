@@ -82,6 +82,64 @@ public class WordControllerIntegrationTest {
     }
 
     @Test
+    public void testThatListWordsReturnsListOfWords() throws Exception {
+        WordEntity testWordA = TestDataUtil.createTestWordEntityA();
+        wordService.save(testWordA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/words")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].id").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].word").value("głowa")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].category").value("czesci_ciala")
+        );
+    }
+
+    @Test
+    public void testThatGetWordReturnsHttpStatus200WhenAuthorExsists() throws Exception{
+
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        wordService.save(testWordEntityA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/words/" + testWordEntityA.getWord())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+
+    @Test
+    public void testThatGetWordReturnsWordWhenWordExists() throws Exception {
+
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        wordService.save(testWordEntityA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/words/" + testWordEntityA.getWord())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.id").value(1)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.word").value("głowa")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.category").value("czesci_ciala")
+        );
+    }
+
+    @Test
+    public void testThatGetWordReturns404WhenAuthorDoesntExist() throws Exception {
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/words/xyz")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
+
+    }
+
+    @Test
     public void testThatGetAllWordsByCategorySuccessfullyReturnsHttp200Created() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/words/category/czesci_ciala")

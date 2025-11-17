@@ -2,6 +2,7 @@ package Fiszki_database.Fiszki_Database;
 
 import Fiszki_database.Fiszki_Database.domain.DTO.TranslationDto;
 import Fiszki_database.Fiszki_Database.domain.DTO.WordDto;
+import Fiszki_database.Fiszki_Database.domain.Entities.TranslationEntity;
 import Fiszki_database.Fiszki_Database.domain.Entities.WordEntity;
 
 public class TestDataUtil {
@@ -48,6 +49,14 @@ public class TestDataUtil {
         return WordDto.builder()
                 .word("piłka")
                 .category("sport")
+                .build();
+    }
+
+    public static TranslationEntity createTestTranslationEntityA(final WordEntity wordEntity){
+        return TranslationEntity.builder()
+                .meaning("head")
+                .language("en")
+                .originalWord(wordEntity)
                 .build();
     }
 
