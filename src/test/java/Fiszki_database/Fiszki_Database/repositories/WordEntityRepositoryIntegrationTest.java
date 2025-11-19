@@ -40,15 +40,13 @@ public class WordEntityRepositoryIntegrationTest {
         assertThat(resultByWord.get()).isEqualTo(wordEntity);
     }
 
-
-
     @Test
     public void testThatWordCanBeDeletedAndRecalledById(){
         WordEntity wordEntity = TestDataUtil.createTestWordEntityA();
         wordRepository.save(wordEntity);
         wordRepository.deleteById(wordEntity.getId());
         Optional<WordEntity> resultByWord = wordRepository.findById(wordEntity.getId());
-        assertThat(resultByWord.isPresent());
+        assertThat(resultByWord).isEmpty();
     }
 
     @Test
@@ -58,7 +56,7 @@ public class WordEntityRepositoryIntegrationTest {
         wordRepository.save(wordEntity);
         wordRepository.deleteByWord(wordEntity.getWord());
         Optional<WordEntity> resultByWord = wordRepository.findByWord(wordEntity.getWord());
-        assertThat(resultByWord.isPresent());
+        assertThat(resultByWord).isEmpty();
     }
 
     //**NAPISAĆ TEST DLA LISTOWANIA SŁÓW PO KATEGORII**

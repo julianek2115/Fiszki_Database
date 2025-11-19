@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -39,6 +40,16 @@ public class TranslationEntityRepositoryIntegrationTest {
         Optional<TranslationEntity> result = translationRepositoryTest.findById(translationEntity.getId());
         assertThat(result).isPresent();
         assertThat(result.get().getLanguage()).isEqualTo(translationEntity.getLanguage());
+    }
+
+    @Test
+    @Transactional
+    public void testThatTranslationCanBeDeletedAndRecalled(){
+        TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(null);
+        translationRepositoryTest.save(testTranslationEntityA);
+        translationRepositoryTest.deleteByMeaning(testTranslationEntityA.getMeaning());
+        Optional<TranslationEntity> result = translationRepositoryTest.findById(testTranslationEntityA.getId());
+        assertThat(result).isEmpty();
     }
 
 

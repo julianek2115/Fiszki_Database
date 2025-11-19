@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -41,5 +42,26 @@ public class TranslationController {
                 .map(x -> translationMapper.mapTo(x))
                 .collect(Collectors.toList());
     }
+
+//    @GetMapping(path = "/translations/{meaning}")
+//    public ResponseEntity<TranslationDto> getTranslation(@PathVariable("meaning") String meaning){
+//
+//        Optional<TranslationEntity> foundTranslation = translationService.findTranslationByMeaning(meaning);
+//
+//        return foundTranslation.map(x -> {
+//            TranslationDto translationDto = translationMapper.mapTo(x);
+//            return new ResponseEntity<>(translationDto, HttpStatus.OK);
+//            }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+//
+//    }
+
+    @DeleteMapping(path = "/translations/translation/{meaning}")
+    public ResponseEntity<TranslationDto> deleteTranslation(@PathVariable("meaning") String meaning){
+        translationService.deleteTranslation(meaning);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+
 
 }

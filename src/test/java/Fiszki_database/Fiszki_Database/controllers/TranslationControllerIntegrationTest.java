@@ -2,11 +2,13 @@ package Fiszki_database.Fiszki_Database.controllers;
 
 import Fiszki_database.Fiszki_Database.TestDataUtil;
 import Fiszki_database.Fiszki_Database.domain.DTO.TranslationDto;
+import Fiszki_database.Fiszki_Database.domain.Entities.TranslationEntity;
 import Fiszki_database.Fiszki_Database.services.TranslationService;
 import Fiszki_database.Fiszki_Database.services.WordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -74,7 +76,49 @@ public class TranslationControllerIntegrationTest {
 
     @Test
     public void testThatListTranslationsSuccessfullyReturnsHttp200Created() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/translations")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
 
+
+    @Test
+    public void testThatListTranslationsReturnsListOfTranslations() throws Exception {
+        TranslationEntity testTranslationA = TestDataUtil.createTestTranslationEntityA(null);
+        translationService.createTranslation(testTranslationA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/translations")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].id").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].language").value("en")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].meaning").value("head")
+        );
+    }
+
+    @Test
+    public void testThatDeleteTranslationByMeaningReturnsHttp204ForNonExistingTranslation() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/translations/translation/abcd")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void testThatDeleteTranslationByMeaningReturnsHttpStatusForExistingTranslation() throws Exception {
+        TranslationEntity testTranslationA = TestDataUtil.createTestTranslationEntityA(null);
+        translationService.createTranslation(testTranslationA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/translations/translation/" + testTranslationA.getMeaning())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
 }

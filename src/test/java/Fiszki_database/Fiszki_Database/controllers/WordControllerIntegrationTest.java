@@ -130,7 +130,7 @@ public class WordControllerIntegrationTest {
     }
 
     @Test
-    public void testThatGetWordReturns404WhenAuthorDoesntExist() throws Exception {
+    public void testThatGetWordReturns404WhenWordDoesntExist() throws Exception {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/words/xyz")

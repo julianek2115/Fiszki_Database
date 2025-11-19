@@ -4,8 +4,10 @@ import Fiszki_database.Fiszki_Database.domain.Entities.TranslationEntity;
 import Fiszki_database.Fiszki_Database.repositories.TranslationRepository;
 import Fiszki_database.Fiszki_Database.services.TranslationService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -27,5 +29,16 @@ public class TranslationServiceImpl implements TranslationService {
     public List<TranslationEntity> findAll() {
         return StreamSupport.stream(translationRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public void deleteTranslation(String meaning) {
+        translationRepository.deleteByMeaning(meaning);
+    }
+
+//    @Override
+//    public Optional<TranslationEntity> findTranslationByMeaning(String meaning) {
+//        return translationRepository.findTranslationByMeaning(meaning);
+//    }
 
 }
