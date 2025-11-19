@@ -28,7 +28,7 @@ public class TranslationEntity {
 
     private String meaning;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne()
     @JoinColumn(name = "original_word")
     private WordEntity originalWord;
 }

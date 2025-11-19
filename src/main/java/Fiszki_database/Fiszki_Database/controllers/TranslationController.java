@@ -2,11 +2,15 @@ package Fiszki_database.Fiszki_Database.controllers;
 
 import Fiszki_database.Fiszki_Database.domain.DTO.TranslationDto;
 import Fiszki_database.Fiszki_Database.domain.Entities.TranslationEntity;
+import Fiszki_database.Fiszki_Database.domain.Entities.WordEntity;
 import Fiszki_database.Fiszki_Database.mappers.Mapper;
+import Fiszki_database.Fiszki_Database.repositories.WordRepository;
 import Fiszki_database.Fiszki_Database.services.TranslationService;
+import Fiszki_database.Fiszki_Database.services.WordService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,17 +22,28 @@ public class TranslationController {
 
     private TranslationService translationService;
 
+    private WordService wordService;
+
     private Mapper<TranslationEntity, TranslationDto>  translationMapper;
 
-    public TranslationController(TranslationService translationService, Mapper<TranslationEntity, TranslationDto> translationMapper) {
+    public TranslationController(TranslationService translationService, WordService wordService, Mapper<TranslationEntity, TranslationDto> translationMapper) {
         this.translationService = translationService;
+        this.wordService = wordService;
         this.translationMapper = translationMapper;
     }
 
     @PutMapping(path = "/translations")
     public ResponseEntity<TranslationDto> addTranslation(@RequestBody TranslationDto translationDto){
 
-        TranslationEntity translationEntity = translationMapper.mapFrom(translationDto);
+        WordEntity word = wordService.findByWord(translationDto.getOriginalWord())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        TranslationEntity translationEntity = new TranslationEntity();
+        translationEntity.setMeaning(translationDto.getMeaning());
+        translationEntity.setLanguage(translationDto.getLanguage());
+        translationEntity.setOriginalWord(word);
+
+        //translationMapper.mapFrom(translationDto);
         TranslationEntity savedTranslationEntity = translationService.createTranslation(translationEntity);
         TranslationDto savedTranslationDto = translationMapper.mapTo(savedTranslationEntity);
         return new ResponseEntity<>(savedTranslationDto, HttpStatus.CREATED);

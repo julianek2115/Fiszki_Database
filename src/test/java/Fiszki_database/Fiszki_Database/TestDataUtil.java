@@ -64,7 +64,7 @@ public class TestDataUtil {
         return TranslationDto.builder()
                 .meaning("head")
                 .language("en")
-                .originalWord(wordDto)
+                .originalWord(wordDto.getWord())
                 .build();
 
     }

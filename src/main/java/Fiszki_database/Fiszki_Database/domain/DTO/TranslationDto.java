@@ -18,5 +18,7 @@ public class TranslationDto {
 
     private String meaning;
 
-    private WordDto originalWord;
+    private String originalWord;
+
+
 }

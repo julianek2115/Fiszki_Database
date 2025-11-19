@@ -2,6 +2,7 @@ package Fiszki_database.Fiszki_Database.controllers;
 
 import Fiszki_database.Fiszki_Database.TestDataUtil;
 import Fiszki_database.Fiszki_Database.domain.DTO.TranslationDto;
+import Fiszki_database.Fiszki_Database.domain.DTO.WordDto;
 import Fiszki_database.Fiszki_Database.domain.Entities.TranslationEntity;
 import Fiszki_database.Fiszki_Database.services.TranslationService;
 import Fiszki_database.Fiszki_Database.services.WordService;
@@ -42,9 +43,16 @@ public class TranslationControllerIntegrationTest {
 
     @Test
     public void testThatCreateTranslationReturnsHttpStatus201Created() throws Exception {
-        TranslationDto testTranslationDto = TestDataUtil.createTestTranslationDtoA(null);
-        testTranslationDto.setId(null);
-        String createTranslationJson = objectMapper.writeValueAsString(testTranslationDto);
+        WordDto testWordDtoA = TestDataUtil.createTestWordDtoA();
+        TranslationDto testTranslation = TestDataUtil.createTestTranslationDtoA(testWordDtoA);
+        testTranslation.setId(null);
+        String createTranslationJson = objectMapper.writeValueAsString(testTranslation);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/words")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testWordDtoA))
+        );
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/translations")
