@@ -52,6 +52,14 @@ public class TranslationEntityRepositoryIntegrationTest {
         assertThat(result).isEmpty();
     }
 
+    @Test
+    public void testThatTranslationExists(){
+        TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(null);
+        translationRepositoryTest.save(testTranslationEntityA);
+        boolean existByMeaning = translationRepositoryTest.isExistByMeaning(testTranslationEntityA.getMeaning());
+        assertThat(existByMeaning).isTrue();
+    }
+
 
 
 

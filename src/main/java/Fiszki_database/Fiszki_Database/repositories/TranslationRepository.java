@@ -13,4 +13,6 @@ public interface TranslationRepository extends CrudRepository<TranslationEntity,
 
     void deleteByMeaning(String meaning);
 
+    boolean isExistByMeaning(String meaning);
+
 }

@@ -33,7 +33,7 @@ public class TranslationController {
     }
 
     @PutMapping(path = "/translations")
-    public ResponseEntity<TranslationDto> addTranslation(@RequestBody TranslationDto translationDto){
+    public ResponseEntity<TranslationDto> createUpdateTranslation(@RequestBody TranslationDto translationDto){
 
         WordEntity word = wordService.findByWord(translationDto.getOriginalWord())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

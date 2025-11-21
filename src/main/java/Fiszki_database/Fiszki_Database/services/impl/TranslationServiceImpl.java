@@ -36,6 +36,11 @@ public class TranslationServiceImpl implements TranslationService {
         translationRepository.deleteByMeaning(meaning);
     }
 
+    @Override
+    public boolean isExists(String meaning) {
+        return translationRepository.isExistByMeaning(meaning);
+    }
+
 //    @Override
 //    public Optional<TranslationEntity> findTranslationByMeaning(String meaning) {
 //        return translationRepository.findTranslationByMeaning(meaning);

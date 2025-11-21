@@ -17,4 +17,6 @@ public interface TranslationService {
 
     void deleteTranslation(String meaning);
 
+    boolean isExists(String meaning);
+
 }
