@@ -7,12 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TranslationRepository extends CrudRepository<TranslationEntity,Long> {
-
-    Optional<TranslationEntity> findTranslationByMeaning(String meaning);
+public interface TranslationRepository extends CrudRepository<TranslationEntity,String> {
 
     void deleteByMeaning(String meaning);
 
-    boolean isExistByMeaning(String meaning);
 
 }

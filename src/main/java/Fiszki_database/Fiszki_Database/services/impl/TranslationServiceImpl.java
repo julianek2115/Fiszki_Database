@@ -38,7 +38,7 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public boolean isExists(String meaning) {
-        return translationRepository.isExistByMeaning(meaning);
+        return translationRepository.existsById(meaning);
     }
 
 //    @Override

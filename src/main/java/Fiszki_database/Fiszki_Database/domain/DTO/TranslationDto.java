@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 public class TranslationDto {
 
-    private Long id;
 
     private String language;
 

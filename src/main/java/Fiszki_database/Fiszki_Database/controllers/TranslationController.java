@@ -32,8 +32,8 @@ public class TranslationController {
         this.translationMapper = translationMapper;
     }
 
-    @PutMapping(path = "/translations")
-    public ResponseEntity<TranslationDto> createUpdateTranslation(@RequestBody TranslationDto translationDto){
+    @PutMapping(path = "/translations/{meaning}")
+    public ResponseEntity<TranslationDto> createUpdateTranslation(@PathVariable String meaning, @RequestBody TranslationDto translationDto){
 
         WordEntity word = wordService.findByWord(translationDto.getOriginalWord())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -44,9 +44,17 @@ public class TranslationController {
         translationEntity.setOriginalWord(word);
 
         //translationMapper.mapFrom(translationDto);
+        boolean existsTranslation = translationService.isExists(meaning);
         TranslationEntity savedTranslationEntity = translationService.createTranslation(translationEntity);
         TranslationDto savedTranslationDto = translationMapper.mapTo(savedTranslationEntity);
-        return new ResponseEntity<>(savedTranslationDto, HttpStatus.CREATED);
+
+        if(existsTranslation){
+            return new ResponseEntity<>(savedTranslationDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(savedTranslationDto, HttpStatus.CREATED);
+        }
+
+
 
     }
 

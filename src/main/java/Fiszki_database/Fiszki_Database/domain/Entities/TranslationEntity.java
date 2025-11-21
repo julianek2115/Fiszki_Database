@@ -16,17 +16,9 @@ import lombok.NoArgsConstructor;
 public class TranslationEntity {
 
     @Id
-    @GeneratedValue
-    @SequenceGenerator(
-            name = "user_seq",
-            sequenceName = "user_seq",
-            allocationSize = 1
-    )
-    private Long id;
+    private String meaning;
 
     private String language;
-
-    private String meaning;
 
     @ManyToOne()
     @JoinColumn(name = "original_word")

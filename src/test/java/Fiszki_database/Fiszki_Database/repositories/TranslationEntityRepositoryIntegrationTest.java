@@ -37,7 +37,7 @@ public class TranslationEntityRepositoryIntegrationTest {
         TranslationEntity translationEntity = TestDataUtil.createTestTranslationEntityA(wordEntity);
 
         translationRepositoryTest.save(translationEntity);
-        Optional<TranslationEntity> result = translationRepositoryTest.findById(translationEntity.getId());
+        Optional<TranslationEntity> result = translationRepositoryTest.findById(translationEntity.getMeaning());
         assertThat(result).isPresent();
         assertThat(result.get().getLanguage()).isEqualTo(translationEntity.getLanguage());
     }
@@ -48,7 +48,7 @@ public class TranslationEntityRepositoryIntegrationTest {
         TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(null);
         translationRepositoryTest.save(testTranslationEntityA);
         translationRepositoryTest.deleteByMeaning(testTranslationEntityA.getMeaning());
-        Optional<TranslationEntity> result = translationRepositoryTest.findById(testTranslationEntityA.getId());
+        Optional<TranslationEntity> result = translationRepositoryTest.findById(testTranslationEntityA.getMeaning());
         assertThat(result).isEmpty();
     }
 
@@ -56,7 +56,7 @@ public class TranslationEntityRepositoryIntegrationTest {
     public void testThatTranslationExists(){
         TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(null);
         translationRepositoryTest.save(testTranslationEntityA);
-        boolean existByMeaning = translationRepositoryTest.isExistByMeaning(testTranslationEntityA.getMeaning());
+        boolean existByMeaning = translationRepositoryTest.existsById(testTranslationEntityA.getMeaning());
         assertThat(existByMeaning).isTrue();
     }
 
