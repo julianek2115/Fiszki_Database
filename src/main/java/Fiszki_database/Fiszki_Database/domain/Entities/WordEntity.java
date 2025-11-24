@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +33,12 @@ public class WordEntity {
     private String word;
 
     private String category;
+
+    @OneToMany(
+            mappedBy = "originalWord",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+
+    private List<TranslationEntity> translations = new ArrayList<>();
 }
