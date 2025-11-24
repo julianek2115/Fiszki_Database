@@ -55,7 +55,7 @@ public class TranslationControllerIntegrationTest {
         );
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/translations")
+                MockMvcRequestBuilders.put("/translations/" + testTranslation.getMeaning())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createTranslationJson)
         ).andExpect(
@@ -67,7 +67,7 @@ public class TranslationControllerIntegrationTest {
     public void testThatUpdateTranslationReturnsHttpStatus200Ok() throws Exception {
         WordDto testWordDtoA = TestDataUtil.createTestWordDtoA();
         TranslationEntity testTranslationA = TestDataUtil.createTestTranslationEntityA(null);
-        TranslationEntity savedTranslation = translationService.createTranslation(testTranslationA);
+        TranslationEntity savedTranslation = translationService.createUpdateTranslation(testTranslationA.getMeaning(), testTranslationA);
 
         TranslationDto translationDto = TestDataUtil.createTestTranslationDtoA(testWordDtoA);
         translationDto.setMeaning(savedTranslation.getMeaning());
@@ -88,6 +88,62 @@ public class TranslationControllerIntegrationTest {
         );
 
     }
+
+    @Test
+    public void testThatPartialUpdateTranslationReturnsHttpStatus200OOk() throws Exception {
+        WordDto testWordDtoA = TestDataUtil.createTestWordDtoA();
+        TranslationEntity testTranslationA = TestDataUtil.createTestTranslationEntityA(null);
+        TranslationEntity savedTranslation = translationService.createUpdateTranslation(testTranslationA.getMeaning(), testTranslationA);
+
+        TranslationDto translationDto = TestDataUtil.createTestTranslationDtoA(testWordDtoA);
+        translationDto.setLanguage("UPDATED");
+        String createTranslationJson = objectMapper.writeValueAsString(translationDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/words")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testWordDtoA))
+        );
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/translations/" + testTranslationA.getMeaning())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createTranslationJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+
+    }
+
+    @Test
+    public void testThatPartialUpdateTranslationReturnsUpdatedBook() throws Exception {
+
+        WordDto testWordDtoA = TestDataUtil.createTestWordDtoA();
+        TranslationEntity testTranslationA = TestDataUtil.createTestTranslationEntityA(null);
+        TranslationEntity savedTranslation = translationService.createUpdateTranslation(testTranslationA.getMeaning(), testTranslationA);
+
+        TranslationDto translationDto = TestDataUtil.createTestTranslationDtoA(testWordDtoA);
+        translationDto.setLanguage("UPDATED");
+        String createTranslationJson = objectMapper.writeValueAsString(translationDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/words")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testWordDtoA))
+        );
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/translations/" + testTranslationA.getMeaning())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createTranslationJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.meaning").value(testTranslationA.getMeaning())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.language").value("UPDATED")
+        );
+
+    }
+
 
 
     @Test
@@ -111,7 +167,7 @@ public class TranslationControllerIntegrationTest {
     public void testThatUpdateTranslationReturnsHttpUpdateBook() throws Exception {
         WordDto testWordDtoA = TestDataUtil.createTestWordDtoA();
         TranslationEntity testTranslationA = TestDataUtil.createTestTranslationEntityA(null);
-        TranslationEntity savedTranslation = translationService.createTranslation(testTranslationA);
+        TranslationEntity savedTranslation = translationService.createUpdateTranslation(testTranslationA.getMeaning(), testTranslationA);
 
         TranslationDto translationDto = TestDataUtil.createTestTranslationDtoA(testWordDtoA);
         translationDto.setMeaning(savedTranslation.getMeaning());
@@ -149,7 +205,7 @@ public class TranslationControllerIntegrationTest {
     @Test
     public void testThatListTranslationsReturnsListOfTranslations() throws Exception {
         TranslationEntity testTranslationA = TestDataUtil.createTestTranslationEntityA(null);
-        translationService.createTranslation(testTranslationA);
+        translationService.createUpdateTranslation(testTranslationA.getMeaning(), testTranslationA);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/translations")
@@ -172,7 +228,7 @@ public class TranslationControllerIntegrationTest {
     @Test
     public void testThatDeleteTranslationByMeaningReturnsHttpStatusForExistingTranslation() throws Exception {
         TranslationEntity testTranslationA = TestDataUtil.createTestTranslationEntityA(null);
-        translationService.createTranslation(testTranslationA);
+        translationService.createUpdateTranslation(testTranslationA.getMeaning(), testTranslationA);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/translations/translation/" + testTranslationA.getMeaning())

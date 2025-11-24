@@ -35,17 +35,18 @@ public class TranslationController {
     @PutMapping(path = "/translations/{meaning}")
     public ResponseEntity<TranslationDto> createUpdateTranslation(@PathVariable String meaning, @RequestBody TranslationDto translationDto){
 
+
         WordEntity word = wordService.findByWord(translationDto.getOriginalWord())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         TranslationEntity translationEntity = new TranslationEntity();
-        translationEntity.setMeaning(translationDto.getMeaning());
+        translationEntity.setMeaning(meaning);
         translationEntity.setLanguage(translationDto.getLanguage());
         translationEntity.setOriginalWord(word);
 
-        //translationMapper.mapFrom(translationDto);
+
         boolean existsTranslation = translationService.isExists(meaning);
-        TranslationEntity savedTranslationEntity = translationService.createTranslation(translationEntity);
+        TranslationEntity savedTranslationEntity = translationService.createUpdateTranslation(meaning, translationEntity);
         TranslationDto savedTranslationDto = translationMapper.mapTo(savedTranslationEntity);
 
         if(existsTranslation){
@@ -82,6 +83,19 @@ public class TranslationController {
     public ResponseEntity<TranslationDto> deleteTranslation(@PathVariable("meaning") String meaning){
         translationService.deleteTranslation(meaning);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping(path = "/translations/{meaning}")
+    public ResponseEntity<TranslationDto> partialTranslationUpdate(@PathVariable("meaning") String meaning, @RequestBody TranslationDto translationDto){
+
+        if(!translationService.isExists(meaning)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        TranslationEntity translationEntity = translationMapper.mapFrom(translationDto);
+        TranslationEntity updatedTranslationEntity = translationService.partialUpdate(meaning, translationEntity);
+        TranslationDto updatedTranslationDto = translationMapper.mapTo(updatedTranslationEntity);
+        return new ResponseEntity<>(updatedTranslationDto, HttpStatus.OK);
     }
 
 

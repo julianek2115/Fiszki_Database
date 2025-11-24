@@ -21,7 +21,7 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     @Override
-    public TranslationEntity createTranslation(TranslationEntity translation) {
+    public TranslationEntity createUpdateTranslation(String meaning, TranslationEntity translation) {
         return translationRepository.save(translation);
     }
 
@@ -39,6 +39,15 @@ public class TranslationServiceImpl implements TranslationService {
     @Override
     public boolean isExists(String meaning) {
         return translationRepository.existsById(meaning);
+    }
+
+    @Override
+    public TranslationEntity partialUpdate(String meaning, TranslationEntity translation) {
+        translation.setMeaning(meaning);
+        return translationRepository.findById(meaning).map(existingTranslation ->{
+            Optional.ofNullable(translation.getLanguage()).ifPresent(existingTranslation::setLanguage);
+            return translationRepository.save(existingTranslation);
+        }).orElseThrow(() -> new RuntimeException("Translation does not exist!"));
     }
 
 //    @Override

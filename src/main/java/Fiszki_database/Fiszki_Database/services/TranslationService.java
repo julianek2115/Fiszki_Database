@@ -9,7 +9,7 @@ import java.util.Optional;
 @Service
 public interface TranslationService {
 
-    TranslationEntity createTranslation(TranslationEntity translation);
+    TranslationEntity createUpdateTranslation(String meaning, TranslationEntity translation);
 
     List<TranslationEntity> findAll();
 
@@ -18,5 +18,9 @@ public interface TranslationService {
     void deleteTranslation(String meaning);
 
     boolean isExists(String meaning);
+
+    TranslationEntity partialUpdate(String meaning, TranslationEntity translation);
+
+
 
 }

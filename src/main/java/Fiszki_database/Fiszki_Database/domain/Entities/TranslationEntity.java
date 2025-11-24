@@ -20,7 +20,8 @@ public class TranslationEntity {
 
     private String language;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
+    //@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "original_word")
     private WordEntity originalWord;
 }
