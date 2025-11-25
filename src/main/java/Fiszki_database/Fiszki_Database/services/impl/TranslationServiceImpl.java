@@ -57,7 +57,7 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public List<TranslationEntity> findAllTranslationsForWord(String word) {
-        return List.of();
+        return translationRepository.findAllTranslationForWord(word);
     }
 
 //    @Override

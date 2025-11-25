@@ -265,7 +265,36 @@ public class TranslationControllerIntegrationTest {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].meaning").value("head")
         );
+    }
 
+    @Test
+    public void testThatListTranslationsByWordSuccessfullyReturns200Created() throws Exception {
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(testWordEntityA);
+        TranslationEntity savedTranslation = translationService.createUpdateTranslation(testTranslationEntityA.getMeaning(), testTranslationEntityA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/translations/word/" + testWordEntityA.getWord())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatListTranslationsByWordReturnsListOfTranslations() throws Exception {
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(testWordEntityA);
+        TranslationEntity savedTranslation = translationService.createUpdateTranslation(testTranslationEntityA.getMeaning(), testTranslationEntityA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/translations/word/" + testWordEntityA.getWord())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].language").value("en")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].meaning").value("head")
+        );
     }
 
 

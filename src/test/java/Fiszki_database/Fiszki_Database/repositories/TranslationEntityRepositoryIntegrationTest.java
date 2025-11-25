@@ -71,7 +71,15 @@ public class TranslationEntityRepositoryIntegrationTest {
         assertThat(allByLanguage).hasSize(1);
     }
 
+    @Test
+    public void testThatTranslationsCanBeFoundByuOriginalWord(){
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(testWordEntityA);
 
+        translationRepositoryTest.save(testTranslationEntityA);
+        List<TranslationEntity> allTranslationForWord = translationRepositoryTest.findAllTranslationForWord(testWordEntityA.getWord());
+        assertThat(allTranslationForWord).hasSize(1);
+    }
 
 
 }

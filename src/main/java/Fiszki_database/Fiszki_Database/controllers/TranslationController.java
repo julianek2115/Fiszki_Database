@@ -109,7 +109,10 @@ public class TranslationController {
     //FIND ALL SAVED TRANSLATIONS FOR A WORD
     @GetMapping(path = "translations/word/{word}")
     public List<TranslationDto> listTranslationsForWord(@PathVariable("word") String word){
-
+        List<TranslationEntity> allTranslationsForWord = translationService.findAllTranslationsForWord(word);
+        return allTranslationsForWord.stream()
+                .map(t -> translationMapper.mapTo(t))
+                .collect(Collectors.toList());
     }
 
 
