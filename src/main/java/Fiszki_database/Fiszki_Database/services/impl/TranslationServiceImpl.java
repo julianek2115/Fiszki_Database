@@ -50,6 +50,16 @@ public class TranslationServiceImpl implements TranslationService {
         }).orElseThrow(() -> new RuntimeException("Translation does not exist!"));
     }
 
+    @Override
+    public List<TranslationEntity> findAllByLanguage(String language) {
+        return translationRepository.findAllByLanguage(language);
+    }
+
+    @Override
+    public List<TranslationEntity> findAllTranslationsForWord(String word) {
+        return List.of();
+    }
+
 //    @Override
 //    public Optional<TranslationEntity> findTranslationByMeaning(String meaning) {
 //        return translationRepository.findTranslationByMeaning(meaning);

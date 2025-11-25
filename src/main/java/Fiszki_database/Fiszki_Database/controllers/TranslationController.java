@@ -67,6 +67,14 @@ public class TranslationController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping(path = "/translations/{language}")
+    public List<TranslationDto> listTranslations(@PathVariable String language){
+        List<TranslationEntity> foundTranslations = translationService.findAllByLanguage(language);
+        return foundTranslations.stream()
+                .map(translation -> translationMapper.mapTo(translation))
+                .collect(Collectors.toList());
+    }
+
 //    @GetMapping(path = "/translations/{meaning}")
 //    public ResponseEntity<TranslationDto> getTranslation(@PathVariable("meaning") String meaning){
 //
@@ -98,7 +106,11 @@ public class TranslationController {
         return new ResponseEntity<>(updatedTranslationDto, HttpStatus.OK);
     }
 
+    //FIND ALL SAVED TRANSLATIONS FOR A WORD
+    @GetMapping(path = "translations/word/{word}")
+    public List<TranslationDto> listTranslationsForWord(@PathVariable("word") String word){
 
+    }
 
 
 }

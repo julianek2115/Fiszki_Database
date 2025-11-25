@@ -4,6 +4,7 @@ import Fiszki_database.Fiszki_Database.TestDataUtil;
 import Fiszki_database.Fiszki_Database.domain.DTO.TranslationDto;
 import Fiszki_database.Fiszki_Database.domain.DTO.WordDto;
 import Fiszki_database.Fiszki_Database.domain.Entities.TranslationEntity;
+import Fiszki_database.Fiszki_Database.domain.Entities.WordEntity;
 import Fiszki_database.Fiszki_Database.services.TranslationService;
 import Fiszki_database.Fiszki_Database.services.WordService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -235,5 +236,37 @@ public class TranslationControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
+
+    @Test
+    public void testThatListTranslationsByLanguageSuccessfullyReturns200Created() throws Exception {
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(testWordEntityA);
+        TranslationEntity savedTranslation = translationService.createUpdateTranslation(testTranslationEntityA.getMeaning(), testTranslationEntityA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/translations/" + savedTranslation.getLanguage())
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatListTranslationsByLanguageReturnsListOfTranslations() throws Exception {
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(testWordEntityA);
+        TranslationEntity savedTranslation = translationService.createUpdateTranslation(testTranslationEntityA.getMeaning(), testTranslationEntityA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/translations/" + savedTranslation.getLanguage())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].language").value("en")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].meaning").value("head")
+        );
+
+    }
+
 
 }

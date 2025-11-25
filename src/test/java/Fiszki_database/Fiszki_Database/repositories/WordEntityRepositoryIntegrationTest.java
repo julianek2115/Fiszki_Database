@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,5 +60,11 @@ public class WordEntityRepositoryIntegrationTest {
         assertThat(resultByWord).isEmpty();
     }
 
-    //**NAPISAĆ TEST DLA LISTOWANIA SŁÓW PO KATEGORII**
+    @Test
+    public void testThatWordsCanBeFoundByCategory(){
+        WordEntity wordEntity = TestDataUtil.createTestWordEntityA();
+        wordRepository.save(wordEntity);
+        List<WordEntity> foundWords = wordRepository.findAllByCategory(wordEntity.getCategory());
+        assertThat(foundWords).hasSize(1);
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,6 +59,16 @@ public class TranslationEntityRepositoryIntegrationTest {
         translationRepositoryTest.save(testTranslationEntityA);
         boolean existByMeaning = translationRepositoryTest.existsById(testTranslationEntityA.getMeaning());
         assertThat(existByMeaning).isTrue();
+    }
+
+    @Test
+    public void testThatTranslationsCanBeFoundByLanguage(){
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        TranslationEntity testTranslationEntityA = TestDataUtil.createTestTranslationEntityA(testWordEntityA);
+
+        translationRepositoryTest.save(testTranslationEntityA);
+        List<TranslationEntity> allByLanguage = translationRepositoryTest.findAllByLanguage(testTranslationEntityA.getLanguage());
+        assertThat(allByLanguage).hasSize(1);
     }
 
 

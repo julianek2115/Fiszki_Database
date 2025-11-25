@@ -150,6 +150,24 @@ public class WordControllerIntegrationTest {
 
     }
 
+    @Test
+    public void testThatGetAllWordsByCategoryReturnsFoundWords() throws Exception {
+        WordEntity testWordEntityA = TestDataUtil.createTestWordEntityA();
+        WordEntity savedWord = wordService.save(testWordEntityA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/words/category/" + savedWord.getCategory())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].id").value(1)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].word").value("głowa")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].category").value("czesci_ciala")
+        );
+
+    }
+
 
     @Test
     public void testThatDeleteWordReturnsHttpStatus204ForNonExistingWord() throws Exception {

@@ -21,6 +21,8 @@ public interface TranslationService {
 
     TranslationEntity partialUpdate(String meaning, TranslationEntity translation);
 
+    List<TranslationEntity> findAllByLanguage(String language);
 
+    List<TranslationEntity> findAllTranslationsForWord(String word);
 
 }
